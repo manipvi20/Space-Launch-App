@@ -1,0 +1,60 @@
+<div class="home">
+  <h1 i18n="@@home-msg" class="bangla" aria-label="SpaceX Launch Programs">SpaceX Launch Programs</h1>
+  <div class="row">
+    <div class="col-md-4 col-xs-12 col-sm-12 col-lg-2 left-panel mb-2">
+      <h4 role="heading" aria-level="1"><strong>Filters</strong></h4>
+      <p class="text-center heading" role="heading" aria-level="2">Launch Year</p>
+      <div class="row">
+        <p class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center" *ngFor="let year of years">
+          <button class="years-btn" (click)="yearFilterClick(year)" [class.selected]="selectedYear == year">{{year}}</button>
+        </p>
+      </div>
+      <p class="text-center heading" role="heading" aria-level="2">Successfull Launch</p>
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+        <button class="launch-land-btn years-btn" [class.selected]="selectedLaunch == 'true'" (click)="launchSuccess('true')">True</button>
+      </div>
+      <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+        <button class="launch-land-btn years-btn" [class.selected]="selectedLaunch == 'false'" (click)="launchSuccess('false')">False</button>
+      </div>
+      </div>
+      <p class="text-center heading"  role="heading" aria-level="2">Successfull Landing</p>
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+          <button class="launch-land-btn years-btn" [class.selected]="selectedLand == 'true'" (click)="landSuccess('true')">True</button>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 text-center">
+          <button class="launch-land-btn years-btn" [class.selected]="selectedLand == 'false'" (click)="landSuccess('false')">False</button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8 col-xs-12 col-sm-12 col-lg-10 right-panel">
+      <mat-spinner *ngIf="loading" aria-label="loading" mode="indeterminate"></mat-spinner>
+      <div class="row wrapper" *ngIf="!loading">
+        <div *ngFor="let data of tempSpaceDetails; index as i" class="col-md-6 col-lg-3 col-sm-6 col-xs-12">
+          <div class="text-center space-item" role="tab" id="{{'Id'+i}}">
+            <div role="img" aria-label="Mission icon image">
+              <img class="space-icon" src="{{data.links.mission_patch_small}}" width="100%" alt="{{data.links.mission_patch_small}}"/>
+            </div>
+            <div class="text-left">
+              <h3 class="mission-name" role="heading">{{data.mission_name}} #{{data.flight_number}}</h3>
+              <h4>Mission Ids: </h4>
+                <ul *ngIf="data.mission_id.length > 0; else noMission">
+                  <li *ngFor="let mission of data.mission_id; index as missionIndex">
+                    {{mission}}
+                  </li>
+                </ul>
+                <ng-template #noMission aria-label="No Missions Available">No Missions Available <br> <br></ng-template>
+              <p><label aria-label="Launch Year">Launch year: </label> <span>{{data.launch_year}}</span></p>
+              <p><label aria-label="Successfull Launch">Successfull Launch: </label> <span>{{data.launch_success}}</span></p>
+              <p><label aria-label="Successfull Landing">Successfull Landing: </label> <span *ngIf="data.rocket.first_stage.cores.length > 0;">{{data.rocket.first_stage.cores[0].land_success}}</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="develped-by">
+    <label aria-label="Developed by">Developed by: </label> <span aria-label="Manikandan Natarajan"> Manikandan Natarajan </span>
+  </div>
+</div>
